@@ -223,7 +223,7 @@ extern int sys_wait(void);
 extern int sys_write(void);
 extern int sys_uptime(void);
 extern int sys_logsyscalls(void);
-extern int sys_getyear(void);
+extern int sys_systemlog(void);
 
 
 static int (*syscalls[])(void) = {
@@ -249,7 +249,7 @@ static int (*syscalls[])(void) = {
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
 [SYS_logsyscalls]   sys_logsyscalls,
-[SYS_getyear] sys_getyear,
+[SYS_systemlog] sys_systemlog,
 };
 
 void
@@ -266,6 +266,7 @@ syscall(void)
       record[index].id = num;
       record[index].pid = curproc->pid;
       record[index].hour = r->hour;
+      record[index].minute = r->minute;
 
       //printLog(record,index);
     curproc->tf->eax = syscalls[num]();

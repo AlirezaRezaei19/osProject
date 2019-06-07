@@ -21,7 +21,7 @@ sys_logsyscalls(void)
   return logsyscalls();
 }
 
-void printCount(int id,int pid,int hour)
+void printCount(int id,int pid,int hour,int minute)
 {
 int traceState = 1;
 
@@ -37,78 +37,120 @@ int traceState = 1;
             case 1:
                 cprintf("sys_fork %d\n",pid);
                 cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 2:
                 cprintf("sys_exit %d\n",pid,hour);
                 cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 3:
-                cprintf("sys_wait %d\n",pid, hour);
+                cprintf("sys_wait %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 4:
-                cprintf("sys_pipe %d\n",pid, hour);
+                cprintf("sys_pipe %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 5:
-                cprintf("sys_read %d\n",pid, hour);
+                cprintf("sys_read %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 6:
-                cprintf("sys_kill %d\n",pid, hour);
+                cprintf("sys_kill %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 7:
-                cprintf("sys_exec %d\n",pid, hour);
+                cprintf("sys_exec %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 8:
-                cprintf("sys_fstat %d\n",pid, hour);
+                cprintf("sys_fstat %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 9:
-                cprintf("sys_chdir %d\n",pid, hour);
+                cprintf("sys_chdir %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 10:
-                cprintf("sys_dup %d\n",pid, hour);
+                cprintf("sys_dup %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 11:
-                cprintf("sys_getpid %d\n",pid, hour);
+                cprintf("sys_getpid %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 12:
-                cprintf("sys_sbrk %d\n",pid, hour);
+                cprintf("sys_sbrk %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 13:
-                cprintf("sys_sleep %d\n",pid, hour);
+                cprintf("sys_sleep %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 14:
-                cprintf("sys_uptime %d\n",pid, hour);
+                cprintf("sys_uptime %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 15:
-                cprintf("sys_open %d\n",pid, hour);
+                cprintf("sys_open %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 16:
-                cprintf("sys_write %d\n",pid, hour);
+                cprintf("sys_write %d\n",pid);
                 cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
+                //cprintf("hour: %d\n",hour);
                 break;
             case 17:
-                cprintf("sys_mknod %d\n",pid, hour);
+                cprintf("sys_mknod %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 18:
-                cprintf("sys_unlink %d\n",pid, hour);
+                cprintf("sys_unlink %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 19:
-                cprintf("sys_link %d\n",pid, hour);
+                cprintf("sys_link %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 20:
-                cprintf("sys_mkdir %d\n",pid, hour);
+                cprintf("sys_mkdir %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 21:
-                cprintf("sys_close %d\n",pid, hour);
+                cprintf("sys_close %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 22:
-                cprintf("sys_toggle %d\n",pid, hour);
+                cprintf("sys_logsyscalls %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
             case 23:
-                cprintf("sys_add %d\n",pid, hour);
+                cprintf("sys_syslog %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                cprintf("minute: %d\n",minute);
                 break;
-            case 24:
-                cprintf("sys_ps %d\n",pid, hour);
-                break;
+
         }
 
     }
@@ -117,17 +159,16 @@ int traceState = 1;
 
 void printLog(struct logsyscall syscall[] , int index){
     for (int i = 0; i < index ; ++i) {
-        printCount(syscall[i].id, syscall[i].pid, syscall[i].hour);
+        printCount(syscall[i].id, syscall[i].pid, syscall[i].hour,syscall[i].minute);
     }
 }
 
 int
-sys_getyear(void)
+sys_systemlog(void)
 {
 
     printLog(record,index);
-    cprintf("hi: " ,record[2].pid);
-    return 1975;
+    return 0;
 }
 
 int

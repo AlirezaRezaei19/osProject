@@ -7,6 +7,6 @@ int
 main(void)
 {
 
-printf(1, "the list of systemcall is call %d\n",  getyear());
+printf(1, "the list of systemcall is call %d\n",  systemlog());
 exit();
 }

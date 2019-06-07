@@ -21,5 +21,5 @@
 #define SYS_mkdir  20
 #define SYS_close  21
 #define SYS_logsyscalls  22
-#define SYS_getyear 23
+#define SYS_systemlog 23
 

@@ -24,7 +24,7 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int logsyscalls (void);
-int getyear(void);
+int systemlog(void);
 
 
 // ulib.c
