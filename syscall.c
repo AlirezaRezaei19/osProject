@@ -6,6 +6,125 @@
 #include "proc.h"
 #include "x86.h"
 #include "syscall.h"
+#include "date.h"
+#include "fileExtern.h"
+
+
+int count[24] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+//int traceState = 1;
+struct rtcdate *r;
+
+
+
+
+
+
+/*
+
+
+
+void printCount(int id,int pid,int hour)
+{
+
+
+   // cmostime(r);
+   // cprintf("time:",r->day);
+    //cprintf("time %d\n",r->hour);
+   // count[id+1]++;
+
+    if(traceState)
+    {
+        switch(id)
+        {
+            case 1:
+                cprintf("sys_fork %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                break;
+            case 2:
+                cprintf("sys_exit %d\n",pid,hour);
+                cprintf("hour: %d\n",hour);
+                break;
+            case 3:
+                cprintf("sys_wait %d\n",pid, hour);
+                break;
+            case 4:
+                cprintf("sys_pipe %d\n",pid, hour);
+                break;
+            case 5:
+                cprintf("sys_read %d\n",pid, hour);
+                break;
+            case 6:
+                cprintf("sys_kill %d\n",pid, hour);
+                break;
+            case 7:
+                cprintf("sys_exec %d\n",pid, hour);
+                break;
+            case 8:
+                cprintf("sys_fstat %d\n",pid, hour);
+                break;
+            case 9:
+                cprintf("sys_chdir %d\n",pid, hour);
+                break;
+            case 10:
+                cprintf("sys_dup %d\n",pid, hour);
+                break;
+            case 11:
+                cprintf("sys_getpid %d\n",pid, hour);
+                break;
+            case 12:
+                cprintf("sys_sbrk %d\n",pid, hour);
+                break;
+            case 13:
+                cprintf("sys_sleep %d\n",pid, hour);
+                break;
+            case 14:
+                cprintf("sys_uptime %d\n",pid, hour);
+                break;
+            case 15:
+                cprintf("sys_open %d\n",pid, hour);
+                break;
+            case 16:
+                cprintf("sys_write %d\n",pid, hour);
+                cprintf("hour: %d\n",hour);
+                break;
+            case 17:
+                cprintf("sys_mknod %d\n",pid, hour);
+                break;
+            case 18:
+                cprintf("sys_unlink %d\n",pid, hour);
+                break;
+            case 19:
+                cprintf("sys_link %d\n",pid, hour);
+                break;
+            case 20:
+                cprintf("sys_mkdir %d\n",pid, hour);
+                break;
+            case 21:
+                cprintf("sys_close %d\n",pid, hour);
+                break;
+            case 22:
+                cprintf("sys_toggle %d\n",pid, hour);
+                break;
+            case 23:
+                cprintf("sys_add %d\n",pid, hour);
+                break;
+            case 24:
+                cprintf("sys_ps %d\n",pid, hour);
+                break;
+        }
+
+    }
+
+}
+
+void printLog(struct logsyscall syscall[] , int index){
+    for (int i = 0; i < index ; ++i) {
+        printCount(syscall[i].id, syscall[i].pid, syscall[i].hour);
+    }
+}
+*/
+
+
 
 // User code makes a system call with INT T_SYSCALL.
 // System call number in %eax.
@@ -60,7 +179,7 @@ argptr(int n, char **pp, int size)
 {
   int i;
   struct proc *curproc = myproc();
- 
+
   if(argint(n, &i) < 0)
     return -1;
   if(size < 0 || (uint)i >= curproc->sz || (uint)i+size > curproc->sz)
@@ -103,6 +222,9 @@ extern int sys_unlink(void);
 extern int sys_wait(void);
 extern int sys_write(void);
 extern int sys_uptime(void);
+extern int sys_logsyscalls(void);
+extern int sys_getyear(void);
+
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -126,16 +248,26 @@ static int (*syscalls[])(void) = {
 [SYS_link]    sys_link,
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
+[SYS_logsyscalls]   sys_logsyscalls,
+[SYS_getyear] sys_getyear,
 };
 
 void
 syscall(void)
 {
   int num;
+    cmostime(r);
   struct proc *curproc = myproc();
 
   num = curproc->tf->eax;
   if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
+      //printCount(num , curproc->pid);
+      index++;
+      record[index].id = num;
+      record[index].pid = curproc->pid;
+      record[index].hour = r->hour;
+
+      //printLog(record,index);
     curproc->tf->eax = syscalls[num]();
   } else {
     cprintf("%d %s: unknown sys call %d\n",

@@ -15,6 +15,7 @@ struct {
 static struct proc *initproc;
 
 int nextpid = 1;
+
 extern void forkret(void);
 extern void trapret(void);
 
@@ -451,6 +452,8 @@ sleep(void *chan, struct spinlock *lk)
   }
 }
 
+
+
 //PAGEBREAK!
 // Wake up all processes sleeping on chan.
 // The ptable lock must be held.
@@ -531,4 +534,9 @@ procdump(void)
     }
     cprintf("\n");
   }
+}
+
+int logsyscalls()
+{
+    return 22;
 }

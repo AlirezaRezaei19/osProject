@@ -6,11 +6,128 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
+#include "fileExtern.h"
+
 
 int
 sys_fork(void)
 {
   return fork();
+}
+
+int
+sys_logsyscalls(void)
+{
+  return logsyscalls();
+}
+
+void printCount(int id,int pid,int hour)
+{
+int traceState = 1;
+
+    // cmostime(r);
+    // cprintf("time:",r->day);
+    //cprintf("time %d\n",r->hour);
+    // count[id+1]++;
+
+    if(traceState)
+    {
+        switch(id)
+        {
+            case 1:
+                cprintf("sys_fork %d\n",pid);
+                cprintf("hour: %d\n",hour);
+                break;
+            case 2:
+                cprintf("sys_exit %d\n",pid,hour);
+                cprintf("hour: %d\n",hour);
+                break;
+            case 3:
+                cprintf("sys_wait %d\n",pid, hour);
+                break;
+            case 4:
+                cprintf("sys_pipe %d\n",pid, hour);
+                break;
+            case 5:
+                cprintf("sys_read %d\n",pid, hour);
+                break;
+            case 6:
+                cprintf("sys_kill %d\n",pid, hour);
+                break;
+            case 7:
+                cprintf("sys_exec %d\n",pid, hour);
+                break;
+            case 8:
+                cprintf("sys_fstat %d\n",pid, hour);
+                break;
+            case 9:
+                cprintf("sys_chdir %d\n",pid, hour);
+                break;
+            case 10:
+                cprintf("sys_dup %d\n",pid, hour);
+                break;
+            case 11:
+                cprintf("sys_getpid %d\n",pid, hour);
+                break;
+            case 12:
+                cprintf("sys_sbrk %d\n",pid, hour);
+                break;
+            case 13:
+                cprintf("sys_sleep %d\n",pid, hour);
+                break;
+            case 14:
+                cprintf("sys_uptime %d\n",pid, hour);
+                break;
+            case 15:
+                cprintf("sys_open %d\n",pid, hour);
+                break;
+            case 16:
+                cprintf("sys_write %d\n",pid, hour);
+                cprintf("hour: %d\n",hour);
+                break;
+            case 17:
+                cprintf("sys_mknod %d\n",pid, hour);
+                break;
+            case 18:
+                cprintf("sys_unlink %d\n",pid, hour);
+                break;
+            case 19:
+                cprintf("sys_link %d\n",pid, hour);
+                break;
+            case 20:
+                cprintf("sys_mkdir %d\n",pid, hour);
+                break;
+            case 21:
+                cprintf("sys_close %d\n",pid, hour);
+                break;
+            case 22:
+                cprintf("sys_toggle %d\n",pid, hour);
+                break;
+            case 23:
+                cprintf("sys_add %d\n",pid, hour);
+                break;
+            case 24:
+                cprintf("sys_ps %d\n",pid, hour);
+                break;
+        }
+
+    }
+
+}
+
+void printLog(struct logsyscall syscall[] , int index){
+    for (int i = 0; i < index ; ++i) {
+        printCount(syscall[i].id, syscall[i].pid, syscall[i].hour);
+    }
+}
+
+int
+sys_getyear(void)
+{
+
+    printLog(record,index);
+    cprintf("hi: " ,record[2].pid);
+    return 1975;
 }
 
 int
